@@ -12,6 +12,7 @@ beforeEach(async () => {
     await Blog.insertMany(helper.testBlogs)
 })
 
+describe('blog_api_tests', () => {
 
 test('there are right amount of blogs and they are JSON format', async () => {
     await api
@@ -106,6 +107,32 @@ test('there are right amount of blogs and they are JSON format', async () => {
   })
 
 
-  afterAll(() => {
-    mongoose.connection.close()
-  }) 
+  
+
+})
+
+describe('user tester', () =>{
+  test('user with bad credentials', async () =>{
+    const usersAtStart = await helper.usersInDb()
+    console.log(usersAtStart)
+    const user = {
+      username: 'juhq',
+      name: 'Juhana',
+      password: 'qq'
+    }
+
+    await api
+    .post('/api/users')
+    .send(user)
+    .expect(400)
+
+    const usersAtEnd = await helper.usersInDb()
+    console.log(usersAtEnd)
+    expect(usersAtStart).toEqual(usersAtEnd)
+
+  })
+})
+
+afterAll(() => {
+  mongoose.connection.close()
+}) 
